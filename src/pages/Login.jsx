@@ -1,5 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import logo from "./logo.png";
+import { courses } from "../utils/data";
+
+// Pick specific courses for the tech grid
+const techGrid = courses.filter((c) =>
+  [
+    "Python Programming",
+    "JavaScript Essentials",
+    "React.js Development",
+  ].includes(c.title),
+);
+
+// Social login icons as SVG/img URLs
+const SOCIAL_LOGINS = [
+  {
+    label: "Login with Google",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg",
+    bg: "#fff",
+  },
+  {
+    label: "Login with GitHub",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
+    bg: "#fff",
+  },
+  {
+    label: "Login with LinkedIn",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png",
+    bg: "#0077b5",
+  },
+];
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,8 +52,7 @@ export default function Login() {
           </div>
 
           <div className="text-[22px] font-extrabold">
-            Coding
-            <span style={{ color: "#7c3aed" }}>Point</span>
+            Coding<span style={{ color: "#7c3aed" }}>Point</span>
           </div>
         </div>
       </div>
@@ -47,69 +75,37 @@ export default function Login() {
             opportunities.
           </p>
 
-          {/* TECH */}
+          {/* TECH GRID — real images from data */}
           <div className="grid grid-cols-3 gap-[10px] mb-[20px]">
-            <div
-              className="rounded-[14px] p-[14px] text-center text-[22px]"
-              style={{
-                background: "#111827",
-                border: "1px solid rgba(107,114,128,0.3)",
-              }}
-            >
-              🐍
-              <br />
-              <span
+            {techGrid.map((c) => (
+              <div
+                key={c.title}
+                className="rounded-[14px] p-[14px] flex flex-col items-center justify-center gap-2"
                 style={{
-                  fontSize: "12px",
-                  color: "#6b7280",
+                  background: "#111827",
+                  border: "1px solid rgba(107,114,128,0.3)",
+                  minHeight: "90px",
                 }}
               >
-                Python
-              </span>
-            </div>
-
-            <div
-              className="rounded-[14px] p-[14px] text-center font-black"
-              style={{
-                background: "#111827",
-                border: "1px solid rgba(107,114,128,0.3)",
-                fontSize: "18px",
-                color: "#22d3ee",
-              }}
-            >
-              &lt;/&gt;
-              <br />
-              <span
-                style={{
-                  fontSize: "12px",
-                  color: "#6b7280",
-                  fontWeight: 400,
-                }}
-              >
-                HTML/CSS
-              </span>
-            </div>
-
-            <div
-              className="rounded-[14px] p-[14px] text-center font-black"
-              style={{
-                background: "#111827",
-                border: "1px solid rgba(107,114,128,0.3)",
-                color: "#facc15",
-              }}
-            >
-              JS
-              <br />
-              <span
-                style={{
-                  fontSize: "12px",
-                  color: "#6b7280",
-                  fontWeight: 400,
-                }}
-              >
-                JavaScript
-              </span>
-            </div>
+                <img
+                  src={c.img}
+                  alt={c.title}
+                  className="object-contain"
+                  style={{ width: "36px", height: "36px" }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "block";
+                  }}
+                />
+                {/* Fallback */}
+                <span style={{ display: "none", fontSize: "22px" }}>
+                  {c.title[0]}
+                </span>
+                <span style={{ fontSize: "12px", color: "#6b7280" }}>
+                  {c.title.split(" ")[0]}
+                </span>
+              </div>
+            ))}
           </div>
 
           {/* CODE BOX */}
@@ -127,17 +123,15 @@ export default function Login() {
               <div
                 className="w-[10px] h-[10px] rounded-full"
                 style={{ background: "#ef4444" }}
-              ></div>
-
+              />
               <div
                 className="w-[10px] h-[10px] rounded-full"
                 style={{ background: "#f59e0b" }}
-              ></div>
-
+              />
               <div
                 className="w-[10px] h-[10px] rounded-full"
                 style={{ background: "#22c55e" }}
-              ></div>
+              />
             </div>
             <span style={{ color: "#f472b6" }}>function</span>{" "}
             <span style={{ color: "#facc15" }}>learn</span>
@@ -207,10 +201,8 @@ export default function Login() {
                 >
                   {w.icon}
                 </div>
-
                 <div>
                   <div className="text-sm font-bold mb-[2px]">{w.title}</div>
-
                   <div className="text-xs" style={{ color: "#6b7280" }}>
                     {w.sub}
                   </div>
@@ -257,15 +249,11 @@ export default function Login() {
               }}
             >
               <span>✉️</span>
-
               <input
                 type="email"
                 placeholder="Enter your email"
                 className="bg-transparent border-none outline-none text-sm flex-1"
-                style={{
-                  color: "#fff",
-                  fontFamily: "Poppins, sans-serif",
-                }}
+                style={{ color: "#fff", fontFamily: "Poppins, sans-serif" }}
               />
             </div>
 
@@ -285,17 +273,12 @@ export default function Login() {
               }}
             >
               <span>🔒</span>
-
               <input
                 type="password"
                 placeholder="Enter your password"
                 className="bg-transparent border-none outline-none text-sm flex-1"
-                style={{
-                  color: "#fff",
-                  fontFamily: "Poppins, sans-serif",
-                }}
+                style={{ color: "#fff", fontFamily: "Poppins, sans-serif" }}
               />
-
               <span
                 className="cursor-pointer text-sm"
                 style={{ color: "#6b7280" }}
@@ -316,9 +299,7 @@ export default function Login() {
             {/* LOGIN BUTTON */}
             <button
               className="w-full text-white border-none py-[14px] rounded-xl text-base font-bold cursor-pointer"
-              style={{
-                background: "linear-gradient(135deg,#2563eb,#7c3aed)",
-              }}
+              style={{ background: "linear-gradient(135deg,#2563eb,#7c3aed)" }}
             >
               Login →
             </button>
@@ -327,29 +308,19 @@ export default function Login() {
             <div className="flex items-center gap-3 my-5">
               <div
                 className="flex-1 h-px"
-                style={{
-                  background: "rgba(107,114,128,0.3)",
-                }}
-              ></div>
-
+                style={{ background: "rgba(107,114,128,0.3)" }}
+              />
               <span className="text-[13px]" style={{ color: "#6b7280" }}>
                 OR
               </span>
-
               <div
                 className="flex-1 h-px"
-                style={{
-                  background: "rgba(107,114,128,0.3)",
-                }}
-              ></div>
+                style={{ background: "rgba(107,114,128,0.3)" }}
+              />
             </div>
 
-            {/* SOCIAL */}
-            {[
-              ["🟢", "Login with Google"],
-              ["⚫", "Login with GitHub"],
-              ["🔵", "Login with LinkedIn"],
-            ].map(([icon, label]) => (
+            {/* SOCIAL LOGINS — real logos */}
+            {SOCIAL_LOGINS.map(({ label, logo: socialLogo, bg }) => (
               <button
                 key={label}
                 className="flex items-center gap-3 w-full rounded-xl px-[18px] py-3 text-sm font-semibold cursor-pointer transition-all duration-200 mb-[10px]"
@@ -358,8 +329,26 @@ export default function Login() {
                   border: "1px solid rgba(107,114,128,0.35)",
                   color: "#d1d5db",
                 }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.borderColor = "rgba(124,58,237,0.5)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.borderColor = "rgba(107,114,128,0.35)")
+                }
               >
-                {icon} {label}
+                {/* Brand logo */}
+                <div
+                  className="w-[22px] h-[22px] rounded-[4px] flex items-center justify-center flex-shrink-0 overflow-hidden"
+                  style={{ background: bg }}
+                >
+                  <img
+                    src={socialLogo}
+                    alt={label}
+                    className="object-contain"
+                    style={{ width: "16px", height: "16px" }}
+                  />
+                </div>
+                {label}
               </button>
             ))}
 
@@ -378,13 +367,12 @@ export default function Login() {
             </div>
           </div>
 
-          {/* FOOT NOTE */}
+          {/* FOOTNOTE */}
           <div
             className="text-center mt-6 text-[13px] leading-[1.8]"
             style={{ color: "#4b5563" }}
           >
             <div className="mb-[6px]">🛡️ Your data is secure with us</div>
-
             <div>
               By continuing, you agree to our{" "}
               <span className="cursor-pointer" style={{ color: "#a78bfa" }}>

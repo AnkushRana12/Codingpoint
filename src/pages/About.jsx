@@ -2,6 +2,37 @@ import { useNavigate } from "react-router-dom";
 import CtaBanner from "../components/CtaBanner";
 import { BtnPrimary, BtnOutline } from "../components/Buttons";
 
+const TEAM = [
+  {
+    avatar: "https://randomuser.me/api/portraits/men/52.jpg",
+    name: "Rajesh Kumar",
+    role: "Founder & CEO",
+    exp: "12+ Years Experience",
+    spec: "Full Stack Development",
+  },
+  {
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+    name: "Priya Sharma",
+    role: "Lead Instructor",
+    exp: "8+ Years Experience",
+    spec: "Python & Data Science",
+  },
+  {
+    avatar: "https://randomuser.me/api/portraits/men/36.jpg",
+    name: "Amit Verma",
+    role: "Placement Head",
+    exp: "10+ Years Experience",
+    spec: "Career Counseling",
+  },
+  {
+    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    name: "Sneha Patel",
+    role: "Web Dev Mentor",
+    exp: "6+ Years Experience",
+    spec: "React & Node.js",
+  },
+];
+
 export default function About() {
   const navigate = useNavigate();
 
@@ -37,26 +68,10 @@ export default function About() {
         {/* STATS */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-[16px] max-w-[900px] mx-auto mt-[36px]">
           {[
-            {
-              emoji: "🏢",
-              val: "2018",
-              lbl: "Founded",
-            },
-            {
-              emoji: "👥",
-              val: "10K+",
-              lbl: "Students",
-            },
-            {
-              emoji: "🤝",
-              val: "500+",
-              lbl: "Partners",
-            },
-            {
-              emoji: "🏆",
-              val: "95%",
-              lbl: "Placed",
-            },
+            { emoji: "🏢", val: "2018", lbl: "Founded" },
+            { emoji: "👥", val: "10K+", lbl: "Students" },
+            { emoji: "🤝", val: "500+", lbl: "Partners" },
+            { emoji: "🏆", val: "95%", lbl: "Placed" },
           ].map((s) => (
             <div
               key={s.lbl}
@@ -67,11 +82,9 @@ export default function About() {
               }}
             >
               <div className="text-[22px]">{s.emoji}</div>
-
               <div className="text-[24px] sm:text-[28px] font-black">
                 {s.val}
               </div>
-
               <div className="text-xs mt-1" style={{ color: "#6b7280" }}>
                 {s.lbl}
               </div>
@@ -117,9 +130,7 @@ export default function About() {
               >
                 {m.icon}
               </div>
-
               <div className="text-lg font-extrabold mb-[10px]">{m.title}</div>
-
               <div
                 className="text-[13px] leading-[1.8]"
                 style={{ color: "#9ca3af" }}
@@ -154,26 +165,10 @@ export default function About() {
 
           <div className="grid grid-cols-2 gap-[14px]">
             {[
-              {
-                emoji: "📚",
-                val: "20+",
-                lbl: "Courses Offered",
-              },
-              {
-                emoji: "👥",
-                val: "50+",
-                lbl: "Expert Mentors",
-              },
-              {
-                emoji: "💼",
-                val: "500+",
-                lbl: "Hiring Partners",
-              },
-              {
-                emoji: "🏆",
-                val: "15+",
-                lbl: "Awards Won",
-              },
+              { emoji: "📚", val: "20+", lbl: "Courses Offered" },
+              { emoji: "👥", val: "50+", lbl: "Expert Mentors" },
+              { emoji: "💼", val: "500+", lbl: "Hiring Partners" },
+              { emoji: "🏆", val: "15+", lbl: "Awards Won" },
             ].map((s) => (
               <div
                 key={s.lbl}
@@ -184,11 +179,9 @@ export default function About() {
                 }}
               >
                 <div className="text-[26px]">{s.emoji}</div>
-
                 <div className="text-[26px] sm:text-[32px] font-black">
                   {s.val}
                 </div>
-
                 <div className="text-xs mt-1" style={{ color: "#6b7280" }}>
                   {s.lbl}
                 </div>
@@ -244,17 +237,14 @@ export default function About() {
                   border: "2px solid #030311",
                   boxShadow: "0 0 10px rgba(124,58,237,0.5)",
                 }}
-              ></div>
-
+              />
               <div
                 className="text-[13px] font-bold mb-[3px]"
                 style={{ color: "#60a5fa" }}
               >
                 {t.year}
               </div>
-
               <div className="text-[15px] font-extrabold mb-1">{t.title}</div>
-
               <div
                 className="text-[13px] leading-[1.8]"
                 style={{ color: "#6b7280" }}
@@ -266,7 +256,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* TEAM */}
+      {/* TEAM — real avatar images */}
       <section
         className="px-5 sm:px-8 md:px-12 lg:px-[60px] py-[60px]"
         style={{ background: "#06090f" }}
@@ -280,36 +270,7 @@ export default function About() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-[16px]">
-          {[
-            {
-              avatar: "👨‍💼",
-              name: "Rajesh Kumar",
-              role: "Founder & CEO",
-              exp: "12+ Years Experience",
-              spec: "Full Stack Development",
-            },
-            {
-              avatar: "👩‍🏫",
-              name: "Priya Sharma",
-              role: "Lead Instructor",
-              exp: "8+ Years Experience",
-              spec: "Python & Data Science",
-            },
-            {
-              avatar: "👨‍💼",
-              name: "Amit Verma",
-              role: "Placement Head",
-              exp: "10+ Years Experience",
-              spec: "Career Counseling",
-            },
-            {
-              avatar: "👩‍💻",
-              name: "Sneha Patel",
-              role: "Web Dev Mentor",
-              exp: "6+ Years Experience",
-              spec: "React & Node.js",
-            },
-          ].map((m) => (
+          {TEAM.map((m) => (
             <div
               key={m.name}
               className="rounded-[20px] p-6 text-center transition-all duration-200"
@@ -326,13 +287,31 @@ export default function About() {
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center text-[26px] mx-auto mb-3"
-                style={{
-                  background: "linear-gradient(135deg,#2563eb,#7c3aed)",
-                }}
-              >
-                {m.avatar}
+              {/* Real avatar photo */}
+              <div className="relative w-16 h-16 mx-auto mb-3">
+                <img
+                  src={m.avatar}
+                  alt={m.name}
+                  className="w-16 h-16 rounded-full object-cover"
+                  style={{
+                    border: "2.5px solid rgba(124,58,237,0.6)",
+                    boxShadow: "0 0 16px rgba(124,58,237,0.3)",
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+                {/* Fallback initial */}
+                <div
+                  className="w-16 h-16 rounded-full items-center justify-center text-[26px]"
+                  style={{
+                    background: "linear-gradient(135deg,#2563eb,#7c3aed)",
+                    display: "none",
+                  }}
+                >
+                  {m.name[0]}
+                </div>
               </div>
 
               <div className="text-xs mb-2" style={{ color: "#fbbf24" }}>

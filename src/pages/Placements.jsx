@@ -1,24 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import CtaBanner from "../components/CtaBanner";
 import { BtnPrimary, BtnOutline } from "../components/Buttons";
-import { studentsPlaced, hiringPartners } from "../utils/data";
-
-const placementLogos = [
-  "Google",
-  "Microsoft",
-  "Amazon",
-  "TCS",
-  "Infosys",
-  "Wipro",
-  "Deloitte",
-  "Cognizant",
-  "Capgemini",
-  "Accenture",
-  "Tech M.",
-  "HCL",
-  "IBM",
-  "Virtusa",
-];
+import { studentsPlaced, hiringPartners, partners } from "../utils/data";
 
 export default function Placements() {
   const navigate = useNavigate();
@@ -160,11 +143,8 @@ export default function Placements() {
               >
                 {s.icon}
               </div>
-
               <div className="text-[28px] font-black mb-1">{s.val}</div>
-
               <div className="text-sm font-bold mb-1">{s.title}</div>
-
               <div className="text-xs" style={{ color: "#6b7280" }}>
                 {s.sub}
               </div>
@@ -173,23 +153,44 @@ export default function Placements() {
         </div>
       </section>
 
-      {/* PARTNERS */}
+      {/* PARTNERS — real logos from data */}
       <section className="px-5 sm:px-8 md:px-12 lg:px-[60px] pb-[50px]">
         <h2 className="text-[24px] sm:text-[28px] font-extrabold mb-5">
           Our Placement <span style={{ color: "#7c3aed" }}>Partners</span>
         </h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-[10px]">
-          {placementLogos.map((name) => (
+          {partners.map((p) => (
             <div
-              key={name}
-              className="rounded-xl p-3 text-center text-xs font-bold"
+              key={p.n}
+              className="rounded-xl p-3 flex items-center justify-center"
               style={{
                 background: "#070b16",
                 border: "1px solid rgba(124,58,237,0.2)",
+                height: "60px",
               }}
             >
-              {name}
+              <img
+                src={p.logo}
+                alt={p.n}
+                className="object-contain"
+                style={{
+                  maxHeight: "30px",
+                  maxWidth: "80px",
+                  filter: "brightness(0) invert(1)",
+                  opacity: 0.7,
+                }}
+                onError={(e) => {
+                  e.target.style.display = "none";
+                  e.target.nextSibling.style.display = "block";
+                }}
+              />
+              <span
+                className="text-xs font-bold"
+                style={{ display: "none", color: "#d1d5db" }}
+              >
+                {p.n}
+              </span>
             </div>
           ))}
         </div>
@@ -262,10 +263,8 @@ export default function Placements() {
                 >
                   {g.icon}
                 </div>
-
                 <div>
                   <div className="text-sm font-bold mb-[3px]">{g.title}</div>
-
                   <div className="text-[13px]" style={{ color: "#6b7280" }}>
                     {g.sub}
                   </div>
@@ -304,7 +303,6 @@ export default function Placements() {
                   >
                     {b.val}
                   </div>
-
                   <div
                     className="w-full rounded-t-lg min-h-5"
                     style={{
@@ -312,8 +310,7 @@ export default function Placements() {
                       background: "linear-gradient(to top,#2563eb,#7c3aed)",
                       boxShadow: "0 0 18px rgba(124,58,237,0.35)",
                     }}
-                  ></div>
-
+                  />
                   <div className="text-xs mt-2" style={{ color: "#6b7280" }}>
                     {b.yr}
                   </div>
@@ -331,7 +328,7 @@ export default function Placements() {
         </div>
       </section>
 
-      {/* STUDENTS */}
+      {/* STUDENTS PLACED — avatar + company logo from data */}
       <section className="px-5 sm:px-8 md:px-12 lg:px-[60px] pb-[50px]">
         <div className="flex flex-col md:flex-row gap-4 justify-between md:items-center mb-6">
           <h2 className="text-[24px] sm:text-[28px] font-extrabold">
@@ -340,11 +337,7 @@ export default function Placements() {
           </h2>
 
           <BtnOutline
-            style={{
-              padding: "10px 18px",
-              fontSize: "13px",
-              width: "100%",
-            }}
+            style={{ padding: "10px 18px", fontSize: "13px", width: "100%" }}
           >
             View All Placements →
           </BtnOutline>
@@ -360,34 +353,70 @@ export default function Placements() {
                 border: "1px solid rgba(124,58,237,0.2)",
               }}
             >
-              <div
-                className="w-[52px] h-[52px] rounded-full flex items-center justify-center text-xl font-extrabold mx-auto mb-[10px]"
-                style={{
-                  background: "linear-gradient(135deg,#2563eb,#7c3aed)",
-                }}
-              >
-                {s.name[0]}
+              {/* Student avatar */}
+              <div className="relative w-[52px] h-[52px] mx-auto mb-[10px]">
+                <img
+                  src={s.avatar}
+                  alt={s.name}
+                  className="w-[52px] h-[52px] rounded-full object-cover"
+                  style={{ border: "2px solid rgba(124,58,237,0.5)" }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+                {/* Fallback */}
+                <div
+                  className="w-[52px] h-[52px] rounded-full items-center justify-center text-xl font-extrabold"
+                  style={{
+                    background: "linear-gradient(135deg,#2563eb,#7c3aed)",
+                    display: "none",
+                  }}
+                >
+                  {s.name[0]}
+                </div>
               </div>
 
+              {/* Company logo */}
               <div
-                className="text-[11px] font-bold inline-block rounded-md px-2 py-[2px] mb-[6px]"
+                className="flex items-center justify-center rounded-md px-2 py-[4px] mb-[8px] mx-auto"
                 style={{
                   background: "rgba(255,255,255,0.07)",
-                  color: "#22d3ee",
+                  width: "fit-content",
+                  minWidth: "80px",
+                  height: "28px",
                 }}
               >
-                {s.company}
+                <img
+                  src={s.companyLogo}
+                  alt={s.company}
+                  className="object-contain"
+                  style={{
+                    maxHeight: "16px",
+                    maxWidth: "70px",
+                    filter: "brightness(0) invert(1)",
+                    opacity: 0.85,
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "inline";
+                  }}
+                />
+                <span
+                  className="text-[11px] font-bold"
+                  style={{ display: "none", color: "#22d3ee" }}
+                >
+                  {s.company}
+                </span>
               </div>
 
               <div className="text-[13px] font-bold mb-[3px]">{s.name}</div>
-
               <div
                 className="text-[11px] mb-[6px]"
                 style={{ color: "#6b7280" }}
               >
                 {s.role}
               </div>
-
               <div
                 className="text-[16px] font-black"
                 style={{ color: "#60a5fa" }}
@@ -399,7 +428,7 @@ export default function Placements() {
         </div>
       </section>
 
-      {/* HIRING PARTNERS */}
+      {/* HIRING PARTNERS — real logos from data */}
       <section className="bg-[#06090f] px-5 sm:px-8 md:px-12 lg:px-[60px] py-[60px]">
         <div className="text-center mb-10">
           <div
@@ -446,18 +475,34 @@ export default function Placements() {
                   : "1px solid rgba(124,58,237,0.25)",
               }}
             >
+              {/* Company logo */}
               <div
-                className="w-11 h-11 rounded-xl mx-auto mb-[10px] flex items-center justify-center text-base font-black"
+                className="w-11 h-11 rounded-xl mx-auto mb-[10px] flex items-center justify-center"
                 style={{ background: p.c + "22" }}
               >
+                <img
+                  src={p.logo}
+                  alt={p.n}
+                  className="object-contain"
+                  style={{
+                    maxHeight: "24px",
+                    maxWidth: "36px",
+                    filter: "brightness(0) invert(1)",
+                    opacity: 0.85,
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "block";
+                  }}
+                />
+                {/* Fallback dot */}
                 <div
                   className="w-5 h-5 rounded-full"
-                  style={{ background: p.c }}
-                ></div>
+                  style={{ background: p.c, display: "none" }}
+                />
               </div>
 
               <div className="text-sm font-extrabold mb-[6px]">{p.n}</div>
-
               <div className="text-xs" style={{ color: "#6b7280" }}>
                 👥 {p.students}
               </div>
@@ -507,12 +552,10 @@ export default function Placements() {
                 >
                   {s.icon}
                 </div>
-
                 <div>
                   <div className="text-[22px] font-extrabold leading-none">
                     {s.val}
                   </div>
-
                   <div
                     className="text-xs mt-[2px]"
                     style={{ color: "#6b7280" }}
@@ -534,20 +577,6 @@ export default function Placements() {
       </section>
 
       {/* CTA */}
-      {/* <section className="px-5 sm:px-8 md:px-12 lg:px-[60px] py-[60px]">
-        <CtaBanner
-          icon="🏆"
-          title="Your Dream Job is Closer Than You Think!"
-          sub="Join CodingPoint and take the first step towards your success."
-        >
-          <BtnPrimary
-            style={{ width: "100%" }}
-            onClick={() => navigate("/login")}
-          >
-            Enroll Now →
-          </BtnPrimary>
-        </CtaBanner>
-      </section> */}
       <section className="px-4 sm:px-8 md:px-12 lg:px-[60px] py-[50px] sm:py-[60px]">
         <div
           className="rounded-[28px] p-6 sm:p-10 lg:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left"
@@ -558,7 +587,6 @@ export default function Placements() {
             boxShadow: "0 0 40px rgba(124,58,237,0.12)",
           }}
         >
-          {/* LEFT CONTENT */}
           <div className="flex-1">
             <div className="text-5xl sm:text-6xl mb-4">🏆</div>
 
@@ -584,7 +612,6 @@ export default function Placements() {
             </p>
           </div>
 
-          {/* BUTTON */}
           <div className="w-full sm:w-auto">
             <BtnPrimary onClick={() => navigate("/login")}>
               Enroll Now →

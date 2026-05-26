@@ -20,9 +20,7 @@ export default function Courses() {
 
   const filtered = courses.filter((c) => {
     const matchCat = activeCat === "All Courses" || c.cat === activeCat;
-
     const matchSearch = c.title.toLowerCase().includes(search.toLowerCase());
-
     return matchCat && matchSearch;
   });
 
@@ -59,7 +57,7 @@ export default function Courses() {
           </p>
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT — tech logos grid from data */}
         <div
           className="rounded-[22px] p-[18px] sm:p-[22px]"
           style={{
@@ -67,14 +65,31 @@ export default function Courses() {
             border: "1px solid rgba(124,58,237,0.25)",
           }}
         >
-          <div className="grid grid-cols-2 gap-[10px] mb-[12px]">
-            {["🐍 Python", "JS JavaScript", "⚛️ React", "C++ C++"].map((t) => (
+          <div className="grid grid-cols-4 gap-[10px] mb-[12px]">
+            {courses.slice(0, 4).map((c) => (
               <div
-                key={t}
-                className="rounded-xl p-3 text-[16px] sm:text-[22px] text-center"
-                style={{ background: "#111827" }}
+                key={c.title}
+                className="rounded-xl p-3 flex items-center justify-center"
+                style={{ background: "#111827", height: "64px" }}
               >
-                {t}
+                <img
+                  src={c.img}
+                  alt={c.title}
+                  className="object-contain"
+                  style={{ maxHeight: "36px", maxWidth: "36px" }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "block";
+                  }}
+                />
+                <span
+                  style={{
+                    display: "none",
+                    fontSize: "22px",
+                  }}
+                >
+                  {c.title[0]}
+                </span>
               </div>
             ))}
           </div>
@@ -111,9 +126,7 @@ export default function Courses() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="bg-transparent border-none outline-none text-white text-sm w-full"
-            style={{
-              fontFamily: "Poppins, sans-serif",
-            }}
+            style={{ fontFamily: "Poppins, sans-serif" }}
           />
         </div>
 
@@ -129,25 +142,20 @@ export default function Courses() {
                   activeCat === cat
                     ? "linear-gradient(135deg,#2563eb,#7c3aed)"
                     : "#0a0f1d",
-
                 border:
                   activeCat === cat
                     ? "1px solid transparent"
                     : "1px solid rgba(107,114,128,0.35)",
-
                 color: activeCat === cat ? "#fff" : "#d1d5db",
-
                 fontFamily: "Poppins, sans-serif",
               }}
               onMouseEnter={(e) => {
-                if (activeCat !== cat) {
+                if (activeCat !== cat)
                   e.currentTarget.style.borderColor = "#7c3aed";
-                }
               }}
               onMouseLeave={(e) => {
-                if (activeCat !== cat) {
+                if (activeCat !== cat)
                   e.currentTarget.style.borderColor = "rgba(107,114,128,0.35)";
-                }
               }}
             >
               {cat}
@@ -164,110 +172,126 @@ export default function Courses() {
             style={{ color: "#6b7280" }}
           >
             <div className="text-[48px] mb-[12px]">🔍</div>
-
             <div className="text-[18px]">No courses found</div>
           </div>
         ) : (
           filtered.map((c) => (
             <div
               key={c.title}
-              className="rounded-[20px] p-[22px] cursor-pointer transition-all duration-200"
+              className="rounded-[20px] overflow-hidden cursor-pointer transition-all duration-200"
               style={{
                 background: "#070b16",
                 border: "1px solid rgba(124,58,237,0.2)",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-4px)";
-
                 e.currentTarget.style.borderColor = "rgba(124,58,237,0.5)";
-
                 e.currentTarget.style.boxShadow =
                   "0 10px 40px rgba(124,58,237,0.12)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-
                 e.currentTarget.style.borderColor = "rgba(124,58,237,0.2)";
-
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              {/* TOP */}
-              <div className="flex justify-between items-start mb-4 gap-2">
+              {/* COURSE IMAGE BANNER */}
+              <div
+                className="w-full flex items-center justify-center"
+                style={{
+                  height: "120px",
+                  background: `linear-gradient(135deg, ${c.iconBg}33, ${c.iconBg}11)`,
+                  borderBottom: "1px solid rgba(124,58,237,0.1)",
+                }}
+              >
+                <img
+                  src={c.img}
+                  alt={c.title}
+                  className="object-contain drop-shadow-lg"
+                  style={{ maxHeight: "72px", maxWidth: "72px" }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+                {/* Fallback icon box */}
                 <div
-                  className="w-[52px] h-[52px] rounded-[14px] flex items-center justify-center text-2xl font-extrabold flex-shrink-0"
+                  className="w-[52px] h-[52px] rounded-[14px] items-center justify-center text-2xl font-extrabold"
                   style={{
                     background: c.iconBg + "22",
-
                     border: `1px solid ${c.iconBg}44`,
-
                     color: c.iconColor || "#fff",
+                    display: "none",
                   }}
                 >
                   {c.icon}
                 </div>
+              </div>
 
-                <span
-                  className="text-[10px] sm:text-[11px] px-3 py-1 rounded-lg font-bold text-white"
+              {/* CARD BODY */}
+              <div className="p-[22px]">
+                {/* BADGE + WISHLIST ROW */}
+                <div className="flex justify-between items-center mb-3">
+                  <span
+                    className="text-[10px] sm:text-[11px] px-3 py-1 rounded-lg font-bold text-white"
+                    style={{ background: c.badgeColor }}
+                  >
+                    {c.badge}
+                  </span>
+
+                  <span
+                    className="text-lg cursor-pointer transition-colors duration-200"
+                    style={{ color: "#4b5563" }}
+                    onMouseEnter={(e) => (e.target.style.color = "#ef4444")}
+                    onMouseLeave={(e) => (e.target.style.color = "#4b5563")}
+                  >
+                    ♡
+                  </span>
+                </div>
+
+                {/* CONTENT */}
+                <div className="text-[18px] font-extrabold mb-1">{c.title}</div>
+
+                <div
+                  className="text-[13px] font-semibold mb-2"
+                  style={{ color: "#60a5fa" }}
+                >
+                  {c.subtitle}
+                </div>
+
+                <div
+                  className="text-[13px] leading-[1.7] mb-[14px]"
+                  style={{ color: "#6b7280" }}
+                >
+                  {c.desc}
+                </div>
+
+                <div
+                  className="flex flex-wrap gap-4 text-xs mb-[14px]"
+                  style={{ color: "#6b7280" }}
+                >
+                  <span>⏱ {c.duration}</span>
+                  <span>📶 {c.level}</span>
+                </div>
+
+                {/* BUTTON */}
+                <button
+                  onClick={() => navigate("/contact")}
+                  className="w-full text-white border-none py-[10px] rounded-xl text-sm font-bold cursor-pointer flex justify-center items-center"
                   style={{
-                    background: c.badgeColor,
+                    background: "linear-gradient(135deg,#2563eb,#7c3aed)",
                   }}
                 >
-                  {c.badge}
-                </span>
-
-                <span
-                  className="text-lg cursor-pointer transition-colors duration-200"
-                  style={{ color: "#4b5563" }}
-                  onMouseEnter={(e) => (e.target.style.color = "#ef4444")}
-                  onMouseLeave={(e) => (e.target.style.color = "#4b5563")}
-                >
-                  ♡
-                </span>
+                  Explore Course →
+                </button>
               </div>
-
-              {/* CONTENT */}
-              <div className="text-[18px] font-extrabold mb-1">{c.title}</div>
-
-              <div
-                className="text-[13px] font-semibold mb-2"
-                style={{ color: "#60a5fa" }}
-              >
-                {c.subtitle}
-              </div>
-
-              <div
-                className="text-[13px] leading-[1.7] mb-[14px]"
-                style={{ color: "#6b7280" }}
-              >
-                {c.desc}
-              </div>
-
-              <div
-                className="flex flex-wrap gap-4 text-xs mb-[14px]"
-                style={{ color: "#6b7280" }}
-              >
-                <span>⏱ {c.duration}</span>
-                <span>📶 {c.level}</span>
-              </div>
-
-              {/* BUTTON */}
-              <button
-                onClick={() => navigate("/contact")}
-                className="w-full text-white border-none py-[10px] rounded-xl text-sm font-bold cursor-pointer flex justify-center items-center"
-                style={{
-                  background: "linear-gradient(135deg,#2563eb,#7c3aed)",
-                }}
-              >
-                Explore Course →
-              </button>
             </div>
           ))
         )}
       </div>
 
       {/* CTA */}
-      <section className="px-4 sm:px-8 md:px-12 lg:px-[60px] py-[50px] sm:py-[60px]">
+      <section className="py-[50px] sm:py-[60px]">
         <div
           className="rounded-[28px] p-6 sm:p-10 lg:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left"
           style={{
@@ -277,7 +301,6 @@ export default function Courses() {
             boxShadow: "0 0 40px rgba(124,58,237,0.12)",
           }}
         >
-          {/* LEFT CONTENT */}
           <div className="flex-1">
             <div className="text-5xl sm:text-6xl mb-4">🏆</div>
 
@@ -303,7 +326,6 @@ export default function Courses() {
             </p>
           </div>
 
-          {/* BUTTON */}
           <div className="w-full sm:w-auto">
             <BtnPrimary onClick={() => navigate("/login")}>
               Enroll Now →
@@ -311,27 +333,6 @@ export default function Courses() {
           </div>
         </div>
       </section>
-      {/* <div className="mt-10 w-full">
-        <CtaBanner
-          icon="🎓"
-          title="Not Sure Which Course is Right for You?"
-          sub="Book a free 1:1 demo session with our experts and get personalized guidance."
-        >
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <div className="w-full sm:w-auto">
-              <BtnOutline className="w-full sm:w-auto">
-                📅 Book Free Demo
-              </BtnOutline>
-            </div>
-
-            <div className="w-full sm:w-auto">
-              <BtnPrimary className="w-full sm:w-auto">
-                Talk to Expert →
-              </BtnPrimary>
-            </div>
-          </div>
-        </CtaBanner>
-      </div> */}
     </section>
   );
 }

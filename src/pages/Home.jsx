@@ -66,10 +66,23 @@ function ReviewCard({ r }) {
           borderTop: "1px solid rgba(124,58,237,0.15)",
         }}
       >
+        {/* Avatar image from data */}
+        <img
+          src={r.avatar}
+          alt={r.name}
+          className="w-[38px] h-[38px] rounded-full object-cover flex-shrink-0"
+          style={{ border: "2px solid rgba(124,58,237,0.4)" }}
+          onError={(e) => {
+            e.target.style.display = "none";
+            e.target.nextSibling.style.display = "flex";
+          }}
+        />
+        {/* Fallback initial */}
         <div
-          className="w-[38px] h-[38px] rounded-full flex items-center justify-center text-[15px] font-extrabold flex-shrink-0"
+          className="w-[38px] h-[38px] rounded-full items-center justify-center text-[15px] font-extrabold flex-shrink-0"
           style={{
             background: "linear-gradient(135deg,#2563eb,#7c3aed)",
+            display: "none",
           }}
         >
           {r.name[0]}
@@ -77,7 +90,6 @@ function ReviewCard({ r }) {
 
         <div className="flex-1">
           <div className="text-sm font-bold">{r.name}</div>
-
           <div className="text-xs" style={{ color: "#6b7280" }}>
             {r.role}
           </div>
@@ -197,7 +209,6 @@ export default function Home() {
                   <div className="text-[20px] sm:text-[22px] font-extrabold leading-none">
                     {s.val}
                   </div>
-
                   <div
                     className="text-xs mt-[2px]"
                     style={{ color: "#6b7280" }}
@@ -222,25 +233,20 @@ export default function Home() {
           >
             <div
               className="flex items-center gap-[6px] px-[18px] py-[14px]"
-              style={{
-                borderBottom: "1px solid rgba(255,255,255,0.06)",
-              }}
+              style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
             >
               <div
                 className="w-[10px] h-[10px] rounded-full"
                 style={{ background: "#ef4444" }}
-              ></div>
-
+              />
               <div
                 className="w-[10px] h-[10px] rounded-full"
                 style={{ background: "#f59e0b" }}
-              ></div>
-
+              />
               <div
                 className="w-[10px] h-[10px] rounded-full"
                 style={{ background: "#22c55e" }}
-              ></div>
-
+              />
               <span className="text-xs ml-2" style={{ color: "#4b5563" }}>
                 main.cpp
               </span>
@@ -248,9 +254,7 @@ export default function Home() {
 
             <div
               className="p-4 sm:p-5 text-[11px] sm:text-[13px] leading-[1.8] overflow-x-auto"
-              style={{
-                fontFamily: "'Courier New', monospace",
-              }}
+              style={{ fontFamily: "'Courier New', monospace" }}
             >
               <span style={{ color: "#f472b6" }}>#include</span>{" "}
               <span style={{ color: "#facc15" }}>&lt;iostream&gt;</span>
@@ -265,7 +269,7 @@ export default function Home() {
       {/* MARQUEE */}
       <Marquee />
 
-      {/* COURSES */}
+      {/* POPULAR COURSES */}
       <section className="px-5 sm:px-8 md:px-12 lg:px-[60px] py-[60px]">
         <div className="text-center text-[32px] sm:text-[42px] font-black mb-2">
           Popular{" "}
@@ -291,26 +295,53 @@ export default function Home() {
           {popularCourses.map((c) => (
             <div
               key={c.title}
-              className="rounded-[24px] overflow-hidden cursor-pointer transition-all duration-300"
+              className="rounded-[24px] overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
               style={{
-                border: "1px solid rgba(124,58,237,0.25)",
+                border: c.featured
+                  ? "1.5px solid rgba(124,58,237,0.6)"
+                  : "1px solid rgba(124,58,237,0.25)",
                 background: "#070b16",
+                boxShadow: c.featured
+                  ? "0 0 30px rgba(124,58,237,0.2)"
+                  : "none",
               }}
               onClick={() => navigate("/courses")}
             >
+              {/* Course image thumbnail */}
               <div
-                className="h-[220px] flex items-center justify-center font-black"
+                className="flex items-center justify-center overflow-hidden"
                 style={{
+                  height: c.featured ? "260px" : "220px",
                   background: c.gradient,
-                  fontSize: "55px",
                 }}
               >
-                {c.icon}
+                <img
+                  src={c.img}
+                  alt={c.title}
+                  className="object-contain drop-shadow-2xl"
+                  style={{
+                    width: c.featured ? "130px" : "100px",
+                    height: c.featured ? "130px" : "100px",
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "block";
+                  }}
+                />
+                {/* Fallback text icon */}
+                <span
+                  style={{
+                    display: "none",
+                    fontSize: "55px",
+                    fontWeight: 900,
+                  }}
+                >
+                  {c.title[0]}
+                </span>
               </div>
 
               <div className="p-[18px]">
                 <div className="text-[16px] font-extrabold mb-1">{c.title}</div>
-
                 <div
                   className="text-[13px] mb-[10px]"
                   style={{ color: "#6b7280" }}
@@ -328,7 +359,6 @@ export default function Home() {
                   >
                     {c.level}
                   </span>
-
                   <span className="text-[13px]" style={{ color: "#22d3ee" }}>
                     👥 {c.students}
                   </span>
@@ -375,20 +405,38 @@ export default function Home() {
             <ReviewCard key={r.name} r={r} />
           ))}
         </div>
+
+        {/* Review Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+          {reviewStats.map((s) => (
+            <div
+              key={s.lbl}
+              className="rounded-[18px] p-5 flex items-center gap-4"
+              style={{
+                background: "rgba(7,11,22,0.9)",
+                border: "1px solid rgba(124,58,237,0.2)",
+              }}
+            >
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                style={{ background: s.bg }}
+              >
+                {s.icon}
+              </div>
+              <div>
+                <div className="text-[22px] font-extrabold leading-none">
+                  {s.val}
+                </div>
+                <div className="text-xs mt-1" style={{ color: "#6b7280" }}>
+                  {s.lbl}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* CTA */}
-      {/* <section className="px-5 sm:px-8 md:px-12 lg:px-[60px] py-[60px]">
-        <CtaBanner
-          icon="🏆"
-          title="Your Dream Job is Closer Than You Think!"
-          sub="Join CodingPoint and take the first step towards your success."
-        >
-          <BtnPrimary onClick={() => navigate("/login")}>
-            Enroll Now →
-          </BtnPrimary>
-        </CtaBanner>
-      </section> */}
       <section className="px-4 sm:px-8 md:px-12 lg:px-[60px] py-[50px] sm:py-[60px]">
         <div
           className="rounded-[28px] p-6 sm:p-10 lg:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left"
@@ -399,7 +447,6 @@ export default function Home() {
             boxShadow: "0 0 40px rgba(124,58,237,0.12)",
           }}
         >
-          {/* LEFT CONTENT */}
           <div className="flex-1">
             <div className="text-5xl sm:text-6xl mb-4">🏆</div>
 
@@ -425,7 +472,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* BUTTON */}
           <div className="w-full sm:w-auto">
             <BtnPrimary onClick={() => navigate("/login")}>
               Enroll Now →
